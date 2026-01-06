@@ -1,0 +1,4 @@
+CompileFlags:
+  Add:
+    - -isystem
+    - C:/.platformio/packages/toolchain-gccarmnoneeabi/arm-none-eabi/include

@@ -1,0 +1,4 @@
+#pragma once
+
+#define CFBD_BASEANIMATION_FRAME_CNT (8)
+#define CFBD_BASEANIMATION_DELAY_MS (0)

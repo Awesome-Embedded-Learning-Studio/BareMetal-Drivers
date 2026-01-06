@@ -1,0 +1,112 @@
+# Qt-style clang-format
+# Based on Qt coding style with slight modern C++ friendliness
+
+BasedOnStyle: LLVM
+
+Language: Cpp
+Standard: c++20
+
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+
+ContinuationIndentWidth: 8
+IndentCaseLabels: true
+IndentCaseBlocks: false
+IndentGotoLabels: false
+
+AccessModifierOffset: -4
+
+# =========================
+# 大括号风格（Qt 风格）
+# =========================
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterClass: true
+  AfterStruct: true
+  AfterUnion: true
+  AfterEnum: true
+  AfterFunction: true
+  AfterNamespace: true
+  AfterControlStatement: false
+  BeforeElse: true
+  BeforeCatch: true
+  IndentBraces: false
+
+# =========================
+# 行宽 & 自动换行
+# =========================
+ColumnLimit: 100
+AllowAllArgumentsOnNextLine: false
+AllowAllParametersOfDeclarationOnNextLine: false
+BinPackArguments: false
+BinPackParameters: false
+
+PenaltyBreakBeforeFirstCallParameter: 1
+
+# =========================
+# 指针 & 引用（Qt 习惯）
+# =========================
+PointerAlignment: Left
+ReferenceAlignment: Left
+DerivePointerAlignment: false
+
+# =========================
+# 空格规则
+# =========================
+SpaceBeforeParens: ControlStatements
+SpaceBeforeAssignmentOperators: true
+SpaceAfterCStyleCast: true
+SpaceBeforeRangeBasedForLoopColon: true
+
+SpacesInAngles: false
+SpacesInParentheses: false
+SpacesInSquareBrackets: false
+SpacesInCStyleCastParentheses: false
+
+# =========================
+# if / for / while 格式
+# =========================
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: Inline
+
+# =========================
+# return / assignment 换行
+# =========================
+BreakBeforeBinaryOperators: None
+
+# =========================
+# include 排序（Qt 项目常用）
+# =========================
+SortIncludes: true
+IncludeBlocks: Regroup
+IncludeCategories:
+  - Regex: '^<Qt.*>'
+    Priority: 1
+  - Regex: '^<Q.*>'
+    Priority: 2
+  - Regex: '^<.*>'
+    Priority: 3
+  - Regex: '^".*"'
+    Priority: 4
+
+# =========================
+# 命名空间
+# =========================
+NamespaceIndentation: All
+CompactNamespaces: false
+
+# =========================
+# 注释
+# =========================
+AlignTrailingComments: true
+ReflowComments: true
+KeepEmptyLinesAtTheStartOfBlocks: false
+
+# =========================
+# 其他 Qt / 工程实践
+# =========================
+InsertTrailingCommas: Wrapped
+Cpp11BracedListStyle: true
+FixNamespaceComments: true
