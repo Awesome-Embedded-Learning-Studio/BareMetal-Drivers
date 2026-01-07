@@ -1,0 +1,1 @@
+{"config":{"lang":["zh","en"],"separator":"[\\s\\u200b\\-_,:!=\\[\\]()\"/]+|\\.(?!\\d)|&[lg]t;|(?!\\b)(?=[A-Z][a-z])","pipeline":["stemmer","stopWordFilter","trimmer"],"fields":{"title":{"boost":1000.0},"text":{"boost":1.0},"tags":{"boost":1000000.0}}},"docs":[{"location":"","title":"\u5355\u7247\u673a\u57fa\u7840\u5e93\u6587\u6863\u6307\u5357","text":""}]}
