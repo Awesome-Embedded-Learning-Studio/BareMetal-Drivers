@@ -39,11 +39,24 @@ jobs:
           pip install mkdocs-awesome-pages-plugin
           pip install mkdocs-git-revision-date-localized-plugin
       
-      # 4. 构建网站
+      - name: 安装 Doxygen 和 doxybook2
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y doxygen
+          npm install -g doxybook2
+
+      # 4. 生成 API 文档（Doxygen → Markdown）
+      - name: 生成 API 文档
+        run: |
+          doxygen Doxyfile
+          rm -rf documentation/api
+          doxybook2 --config doxybook.json
+
+      # 5. 构建网站
       - name: 构建网站
         run: mkdocs build --clean
       
-      # 5. 自动部署到 gh-pages 分支（这一步会自动触发 GitHub Pages）
+      # 6. 自动部署到 gh-pages 分支（这一步会自动触发 GitHub Pages）
       - name: 部署到 GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:

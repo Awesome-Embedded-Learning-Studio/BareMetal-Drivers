@@ -1,6 +1,21 @@
+/**
+ * @file oled.h
+ * @author Charliechen114514 (chengh1922@mails.jlu.edu.cn)
+ * @brief oled general handles
+ * @version 0.1
+ * @date 2026-01-09
+ *
+ * @copyright Copyright (c) 2026
+ *
+ */
+
 #pragma once
 #include "cfbd_define.h"
 
+/**
+ * @brief
+ *
+ */
 typedef enum
 {
     CFBD_OLEDDriverType_IIC,
@@ -39,9 +54,10 @@ typedef struct _CFBD_OLED_OPS
 
     OLEDSelfOperation open;
     OLEDSelfOperation close;
-
-    /*
-     *  Accept Queries:
+    /**
+     * @brief   OLED_QueryOperation queries the sessions of oled
+     *          currently
+     * @note    device should at least supports settings:
      *      rgb: pass CFBD_Bool type, Always no currently
      *      width: pass uint16_t type, get the width
      *      height: pass uint16_t type, get the height
