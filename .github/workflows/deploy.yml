@@ -43,7 +43,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y doxygen
-          npm install -g doxybook2
+          npm install -g @doxybook/doxybook2
 
       # 4. 生成 API 文档（Doxygen → Markdown）
       - name: 生成 API 文档
