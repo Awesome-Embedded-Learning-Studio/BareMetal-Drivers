@@ -61,20 +61,15 @@ jobs:
         run: |
           doxygen Doxyfile
           rm -rf documentation/api
-          doxybook2 --config doxybook.json
+          doxybook2 --input ./xml \
+                    --output ./documentation/api \
+                    --config doxybook.json
 
-      # 4. 生成 API 文档（Doxygen → Markdown）
-      - name: 生成 API 文档
-        run: |
-          doxygen Doxyfile
-          rm -rf documentation/api
-          doxybook2 --config doxybook.json
-
-      # 5. 构建网站
+      # 7. 构建网站
       - name: 构建网站
         run: mkdocs build --clean
       
-      # 6. 自动部署到 gh-pages 分支（这一步会自动触发 GitHub Pages）
+      # 8. 自动部署到 gh-pages 分支（这一步会自动触发 GitHub Pages）
       - name: 部署到 GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
