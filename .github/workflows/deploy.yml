@@ -61,6 +61,7 @@ jobs:
         run: |
           doxygen Doxyfile
           rm -rf documentation/api
+          mkdir -p documentation/api
           doxybook2 --input ./xml \
                     --output ./documentation/api \
                     --config doxybook.json
