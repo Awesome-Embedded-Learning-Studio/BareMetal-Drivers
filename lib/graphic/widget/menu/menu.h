@@ -1,3 +1,12 @@
+/**
+ * @file menu.h
+ * @brief Menu widget for hierarchical item selection
+ * @details Provides comprehensive menu system with items, indicator, animation,
+ *          and callbacks. Supports keyboard navigation and item selection.
+ * @ingroup Graphics_Widget Graphics_Menu
+ * @{
+ */
+
 #pragma once
 #include <stddef.h>
 
@@ -8,6 +17,10 @@
 #include "menu_item.h"
 #include "widget/animation/animation.h"
 #include "widget/text_config.h"
+
+/**
+ * @brief Forward declaration of menu structure
+ */
 typedef struct _CFBD_Menu CFBD_Menu;
 
 typedef struct
@@ -57,33 +70,93 @@ typedef struct
     void (*reset_tl_points)(CFBD_Menu* pMenu, CFBDGraphic_Point* p, CFBD_Bool request_updates);
 } CFBD_MenuOps;
 
-/* Menu */
+/**
+ * @typedef CFBD_Menu
+ * @brief Main menu widget structure
+ * @details Encompasses all menu state including items, rendering surface,
+ *          indicator, animation, and selection state.
+ * @see CFBD_InitMenu
+ * @see CFBD_MenuOps
+ */
 typedef struct _CFBD_Menu
 {
+    /** @brief Menu operation table (function pointers) */
     CFBD_MenuOps* operations;
-    CFBD_GraphicDevice* device;
-    CFBD_MenuItemGroup* menu_items;
-    CFBDGraphic_Point tl_point; /* default from 0, 0 */
-    SizeBaseType max_width;     // max widths
-    int selected;               /* current selected index */
 
-    /* indicator config */
+    /** @brief Graphics device for menu rendering */
+    CFBD_GraphicDevice* device;
+
+    /** @brief Menu items array and metadata */
+    CFBD_MenuItemGroup* menu_items;
+
+    /** @brief Top-left position of menu (default: 0,0) */
+    CFBDGraphic_Point tl_point;
+
+    /** @brief Maximum width constraint for menu items in pixels */
+    SizeBaseType max_width;
+
+    /** @brief Currently selected item index (0-based) */
+    int selected;
+
+    /** @brief Indicator bar configuration */
     CFBD_MenuIndicator indicator;
-    /* animation config */
+
+    /** @brief Animation timing configuration */
     CFBD_BaseAnimation animation;
 } CFBD_Menu;
 
+/**
+ * @brief Initialize menu widget structure
+ * @details Sets up menu with graphics device, item group, and constraints.
+ *          Menu is ready to use after initialization.
+ * @param[out] pMenu - Menu structure to initialize
+ * @param[in] devices - Graphics device for rendering (must remain valid)
+ * @param[in] assigned_menu_items - Item group array (must remain valid)
+ * @param[in] max_width - Maximum width constraint in pixels
+ * @return void
+ * @note All pointer parameters must remain valid for menu lifetime
+ * @example
+ *     CFBD_Menu menu;
+ *     CFBD_MenuItemGroup items = {...};  // Pre-allocated items
+ *     CFBD_InitMenu(&menu, graphics_device, &items, 128);
+ *     menu.operations->add_item(&menu, "Item 1", ASCII_8x16, NULL);
+ *     menu.operations->immediate_draw(&menu);
+ * @see CFBD_Menu
+ * @see CFBD_MenuOps
+ */
 void CFBD_InitMenu(CFBD_Menu* pMenu,
                    CFBD_GraphicDevice* devices,
                    CFBD_MenuItemGroup* assigned_menu_items,
                    SizeBaseType max_width);
 
+/**
+ * @brief Select next menu item with wrapping
+ * @details Moves selection down one item, wrapping to first item after last.
+ * @param[in] m - Menu structure
+ * @return void
+ * @note Wraps around from last item to first
+ * @example
+ *     OLED_Menu_SelectNext(menu);  // Move to next item
+ *     menu->operations->immediate_draw(menu);  // Redraw with new selection
+ * @see OLED_Menu_SelectPrev
+ */
 static inline void OLED_Menu_SelectNext(CFBD_Menu* m)
 {
     int ni = (m->selected + 1) % (int) m->menu_items->count;
     m->operations->select_index(m, ni);
 }
 
+/**
+ * @brief Select previous menu item with wrapping
+ * @details Moves selection up one item, wrapping to last item before first.
+ * @param[in] m - Menu structure
+ * @return void
+ * @note Wraps around from first item to last
+ * @example
+ *     OLED_Menu_SelectPrev(menu);  // Move to previous item
+ *     menu->operations->immediate_draw(menu);  // Redraw with new selection
+ * @see OLED_Menu_SelectNext
+ */
 static inline void OLED_Menu_SelectPrev(CFBD_Menu* m)
 {
     int ni = (m->selected - 1);
@@ -91,3 +164,5 @@ static inline void OLED_Menu_SelectPrev(CFBD_Menu* m)
         ni = (int) m->menu_items->count - 1;
     m->operations->select_index(m, ni);
 }
+
+/** @} */
