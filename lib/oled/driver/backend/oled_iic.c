@@ -141,80 +141,35 @@ static CFBD_Bool oled_helper_draw_area(CFBD_OLED* handle,
     CFBD_OLED_IICInitsParams* internal = asIICInitsParams(handle->oled_internal_handle);
     const uint16_t POINT_X_MAX = internal->device_specifics->logic_width;
     const uint16_t POINT_Y_MAX = internal->device_specifics->logic_height;
-
     if (x >= POINT_X_MAX)
         return CFBD_FALSE;
     if (y >= POINT_Y_MAX)
         return CFBD_FALSE;
 
-    if (x + width > POINT_X_MAX)
-        width = POINT_X_MAX - x;
-    if (y + height > POINT_Y_MAX)
-        height = POINT_Y_MAX - y;
+    // clear the area before being set
+    oled_helper_clear_area(handle, x, y, width, height);
 
-    uint16_t pages = (height + 7) / 8; /* safer写法 */
-    for (uint16_t j = 0; j < pages; j++) {
-        uint16_t page_index = y / 8 + j;
-        if (page_index >= CACHED_HEIGHT) {
-            return CFBD_TRUE;
-        }
+    for (uint16_t j = 0; j < (height - 1) / 8 + 1; j++) {
         for (uint16_t i = 0; i < width; i++) {
-            uint16_t x_idx = x + i;
-            if (x_idx >= CACHED_WIDTH) {
+            if (x + i > CACHED_WIDTH) {
                 break;
             }
-
-            uint8_t src = sources[j * width + i];
-            OLED_GRAM[page_index][x_idx] |= (src << (y % 8));
-
-            if (page_index + 1 < CACHED_HEIGHT) {
-                OLED_GRAM[page_index + 1][x_idx] |= (src >> (8 - (y % 8)));
+            if (y / 8 + j > CACHED_HEIGHT - 1) {
+                return CFBD_TRUE;
             }
+
+            OLED_GRAM[y / 8 + j][x + i] |= sources[j * width + i] << (y % 8);
+
+            if (y / 8 + j + 1 > CACHED_HEIGHT - 1) {
+                continue;
+            }
+
+            OLED_GRAM[y / 8 + j + 1][x + i] |= sources[j * width + i] >> (8 - y % 8);
         }
     }
 
     return CFBD_TRUE;
 }
-
-// static CFBD_Bool oled_helper_draw_area(CFBD_OLED* handle,
-//                                        uint16_t x,
-//                                        uint16_t y,
-//                                        uint16_t width,
-//                                        uint16_t height,
-//                                        uint8_t* sources)
-// {
-//     CFBD_OLED_IICInitsParams* internal = asIICInitsParams(handle->oled_internal_handle);
-//     const uint16_t POINT_X_MAX = internal->device_specifics->logic_width;
-//     const uint16_t POINT_Y_MAX = internal->device_specifics->logic_height;
-//     if (x >= POINT_X_MAX)
-//         return CFBD_FALSE;
-//     if (y >= POINT_Y_MAX)
-//         return CFBD_FALSE;
-
-//     // clear the area before being set
-//     oled_helper_clear_area(handle, x, y, width, height);
-
-//     for (uint16_t j = 0; j < (height - 1) / 8 + 1; j++) {
-//         for (uint16_t i = 0; i < width; i++) {
-//             if (x + i > CACHED_WIDTH) {
-//                 break;
-//             }
-//             if (y / 8 + j > CACHED_HEIGHT - 1) {
-//                 return CFBD_TRUE;
-//             }
-
-//             OLED_GRAM[y / 8 + j][x + i] |= sources[j * width + i] << (y % 8);
-
-//             if (y / 8 + j + 1 > CACHED_HEIGHT - 1) {
-//                 continue;
-//             }
-
-//             OLED_GRAM[y / 8 + j + 1][x + i] |= sources[j * width + i] >> (8 - y % 8);
-//         }
-//     }
-
-//     return CFBD_TRUE;
-// }
 
 static CFBD_Bool
 oled_helper_update_area(CFBD_OLED* handle, uint16_t x, uint16_t y, uint16_t width, uint16_t height)

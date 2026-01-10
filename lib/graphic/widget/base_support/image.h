@@ -10,6 +10,7 @@
 
 #pragma once
 #include "base/point.h"
+#include "base/rectangle.h"
 #include "base/size.h"
 #include "cfbd_graphic_define.h"
 
@@ -78,5 +79,16 @@ void CFBDGraphic_InitImage(CCGraphic_Image* image,
  * @see CFBD_GraphicDevice
  */
 void CFBDGraphic_DrawImage(CFBD_GraphicDevice* handler, CCGraphic_Image* image);
+
+/**
+ * @brief Draw image with clipping using small fixed buffer (batch processing)
+ * @param device - Graphic device
+ * @param image - Image to draw
+ * @param clip_rect - Clipping rectangle (viewport bounds)
+ * @note Uses 64-byte fixed buffer, processes image in columns batches
+ */
+void CFBDGraphic_DrawImageClipped(CFBD_GraphicDevice* device,
+                                  CCGraphic_Image* image,
+                                  CFBDGraphicRect* clip_rect);
 
 /** @} */

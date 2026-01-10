@@ -119,6 +119,13 @@ static void redraw_item(CFBD_Menu* m, int idx)
     CFBDGraphic_DrawText(m->device, &it->text_obj, CCGraphic_AsciiTextItem_RequestOldPoint);
 }
 
+static inline int32_t smoothstep_q8(int32_t f, int32_t frames)
+{
+    int32_t t = (f << 8) / frames; // Q8
+    int32_t t2 = (t * t) >> 8;
+    return (t2 * (3 * 256 - 2 * t)) >> 8;
+}
+
 void OLED_Menu_Select(CFBD_Menu* m, int new_index)
 {
     if (new_index < 0)
@@ -196,14 +203,14 @@ void OLED_Menu_Select(CFBD_Menu* m, int new_index)
     int last_rev_x = -1, last_rev_y = -1, last_rev_w = 0, last_rev_h = 0;
 
     for (int f = 0; f <= frames; ++f) {
-        float t = (float) f / (float) frames;
-        float st = t * t * (3.0f - 2.0f * t);
-        int cur_y = (int) (start_y + (end_y - start_y) * st + 0.5f);
+        int32_t st = smoothstep_q8(f, frames);
+#define LERP_Q8(a, b, s) ((a) + (((b) - (a)) * (s) >> 8))
+        int cur_y = LERP_Q8(start_y, end_y, st);
+        int cur_x = LERP_Q8(base_x, new_text_x, st);
+        int cur_w = LERP_Q8(base_w, new_text_w, st);
+        int cur_h = LERP_Q8(base_h, new_text_h, st);
+#undef LERP_Q8
 
-        /* interpolated width/pos/height for this frame (smoothly morph) */
-        int cur_x = (int) (base_x + (new_text_x - base_x) * st + 0.5f);
-        int cur_w = (int) (base_w + (new_text_w - base_w) * st + 0.5f);
-        int cur_h = (int) (base_h + (new_text_h - base_h) * st + 0.5f);
         if (cur_w < 1)
             cur_w = 1;
         if (cur_h < 1)

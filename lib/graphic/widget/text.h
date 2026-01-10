@@ -73,6 +73,8 @@ typedef struct
 
     /** @brief Bounding rectangle of rendered text (calculated during draw) */
     CFBDGraphicRect text_bounding_rect;
+
+    CFBD_Bool no_wrap;
 } CFBDGraphic_Text;
 
 /**

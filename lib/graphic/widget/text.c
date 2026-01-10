@@ -9,6 +9,7 @@
 #include "base/point.h"
 #include "base/size.h"
 #include "base_support/image.h"
+#include "cfbd_define.h"
 #include "cfbd_graphic_define.h"
 #include "widget/text.h"
 
@@ -22,6 +23,7 @@ void CFBDGraphic_InitText(CFBDGraphic_Text* item,
     item->tl_point = tl_point;
     item->indexed_point = tl_point;
     item->TexthandleSize = textHandleSize;
+    item->no_wrap = CFBD_FALSE;
 }
 
 static void __pvt_draw_char_each(CFBD_GraphicDevice* device_handle,
@@ -116,7 +118,8 @@ CFBDGraphic_DrawText(CFBD_GraphicDevice* device_handle, CFBDGraphic_Text* item, 
         if (cy2 > by)
             by = cy2;
 
-        if (__pvt_should_be_next_line(device_handle, &br, &draw_tl_point, font_size)) {
+        if (!item->no_wrap &&
+            __pvt_should_be_next_line(device_handle, &br, &draw_tl_point, font_size)) {
             offseterx = 0;
             offsetery++;
             item->indexed_point.x = item->tl_point.x;
