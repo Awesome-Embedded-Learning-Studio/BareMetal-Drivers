@@ -1,7 +1,7 @@
 #include "ssd1309.h"
 
 #include <stdint.h>
-
+#include <string.h>
 
 static uint8_t ssd1309_inits_commands[] = {
         0xAE,       // Turn off OLED panel
@@ -45,6 +45,7 @@ CFBD_OLED_DeviceSpecific* getSSD1309Specific()
     ssd1309_specific.data_prefix = 0x40;
     ssd1309_specific.logic_height = 64;
     ssd1309_specific.logic_width = 128;
-
+    ssd1309_specific.iic_pack_type = SSD1309_IIC_PACK;
+    ssd1309_specific.private_data = NULL; // no, nothing here
     return &ssd1309_specific;
 }

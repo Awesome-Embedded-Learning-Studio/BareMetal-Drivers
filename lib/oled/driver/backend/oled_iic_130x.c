@@ -1,10 +1,10 @@
-#include "oled_iic.h"
+#include "oled_iic_130x.h"
 
 #include <stdint.h>
 #include <string.h>
 
 #include "cfbd_define.h"
-#include "configs/cache_config.h"
+#include "configs/cache_config-ssd130x.h"
 #include "iic.h"
 #include "oled.h"
 
@@ -280,6 +280,12 @@ static CFBD_Bool iic_query(CFBD_OLED* oled,
     return CFBD_FALSE;
 }
 
+static CFBD_Bool iic_sets(CFBD_OLED* oled, const char* property, void* args, void* request_data)
+{
+    // Oh no
+    return CFBD_FALSE;
+}
+
 static const CFBD_OLEDOperations iic_ops = {.init = init,
                                             .setPixel = setPixel,
                                             .setArea = oled_helper_draw_area,
@@ -295,9 +301,10 @@ static const CFBD_OLEDOperations iic_ops = {.init = init,
                                             .close = close_oled,
                                             .open = open_oled,
 
-                                            .self_consult = iic_query};
+                                            .self_consult = iic_query,
+                                            .self_property_setter = iic_sets};
 
-void CFBD_OLED_IICInit(CFBD_OLED* handle, CFBD_OLED_IICInitsParams* pvt_handle)
+void CFBD_OLED_IIC130XInit(CFBD_OLED* handle, CFBD_OLED_IICInitsParams* pvt_handle)
 {
     handle->oled_internal_handle = pvt_handle;
     handle->driver_type = CFBD_OLEDDriverType_IIC;

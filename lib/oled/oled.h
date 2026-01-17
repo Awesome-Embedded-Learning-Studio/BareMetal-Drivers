@@ -175,6 +175,11 @@ typedef CFBD_Bool (*OLED_QueryOperation)(CFBD_OLED* oled,
                                          void* args,
                                          void* request_data);
 
+typedef CFBD_Bool (*OLED_SetPropertyOperation)(CFBD_OLED* oled,
+                                               const char* property,
+                                               void* args,
+                                               void* request_data); // What to write?
+
 /**
  * @struct CFBD_OLEDOperations
  * @brief Virtual operation table implementing OLED driver functionality.
@@ -328,10 +333,23 @@ typedef struct _CFBD_OLED_OPS
      * - "rgb" (CFBD_Bool): CFBD_TRUE for RGB, CFBD_FALSE for monochrome
      * - "width" (uint16_t): Display width in pixels
      * - "height" (uint16_t): Display height in pixels
+     * - "color" (uint8_t): Some Chips supports grey scale, try query these :)
      *
      * Additional device-specific properties may be queried as needed.
      */
     OLED_QueryOperation self_consult;
+
+    /**
+     * @brief set device properties and capabilities.
+     *
+     * @details
+     * Retrieves device-specific information such as resolution, color depth,
+     * and supported features. Implementations must support at least:
+     * - "color" (uint8_t): Some Chips supports grey scale, you can set this
+     *
+     * Additional device-specific properties may be queried as needed.
+     */
+    OLED_SetPropertyOperation self_property_setter;
 } CFBD_OLEDOperations;
 
 /**

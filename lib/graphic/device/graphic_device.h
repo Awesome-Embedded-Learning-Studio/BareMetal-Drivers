@@ -145,6 +145,29 @@ typedef CFBD_Bool (*GraphicOLED_QueryOperation)(CFBD_GraphicDevice* device,
                                                 void* request_data);
 
 /**
+ * @typedef GraphicOLED_PropertySetsOperation
+ * @brief Function pointer type for settings device properties.
+ *
+ * @details
+ * This function pointer signature handles runtime sets for device
+ * capabilities and properties. Implementations should support standard.
+ *
+ * @param device Pointer to the CFBD_GraphicDevice instance.
+ * @param property Null-terminated string naming the queried property.
+ * @param args Optional input arguments for the query (implementation-defined).
+ * @param request_data Output pointer where to write results are.
+ *
+ * @return CFBD_Bool CFBD_TRUE on success, CFBD_FALSE on failure.
+ *
+ *
+ * @see CFBD_GraphicDeviceOperation for operation table definition
+ */
+typedef CFBD_Bool (*GraphicOLED_PropertySetsOperation)(CFBD_GraphicDevice* device,
+                                                       const char* property,
+                                                       void* args,
+                                                       void* request_data);
+
+/**
  * @struct CFBD_GraphicDeviceOperation
  * @brief Virtual operation table for graphics device functionality.
  *
@@ -289,6 +312,12 @@ typedef struct
      * - "rgb" (CFBD_Bool): RGB color support indicator
      */
     GraphicOLED_QueryOperation self_consult;
+
+    /**
+     * @brief Set the properties for devices supports
+     *  - "color": if the devices supports color, thats it :)
+     */
+    GraphicOLED_PropertySetsOperation self_sets;
 } CFBD_GraphicDeviceOperation;
 
 /**

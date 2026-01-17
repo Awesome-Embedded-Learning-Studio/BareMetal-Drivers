@@ -95,6 +95,6 @@
  * @see CFBD_OLED for the device structure
  * @see ssd1309.h for device-specific initialization
  */
-void CFBD_OLED_IICInit(CFBD_OLED* handle, CFBD_OLED_IICInitsParams* pvt_handle);
+void CFBD_OLED_IIC132XInit(CFBD_OLED* handle, CFBD_OLED_IICInitsParams* pvt_handle);
 
 /** @} */ // end of OLED_Backend group

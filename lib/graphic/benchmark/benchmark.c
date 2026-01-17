@@ -8,6 +8,7 @@
 #include "device/graphic_device.h"
 #include "sys_clock/system_clock.h"
 #include "widget/text.h"
+#include "widget/text_config.h"
 
 // FPS性能测试 - 在OLED屏幕上显示刷新率
 static void test_fps_benchmark(CFBD_GraphicDevice* handler)
@@ -17,7 +18,7 @@ static void test_fps_benchmark(CFBD_GraphicDevice* handler)
 
     CFBDGraphic_Text fps_text;
     CFBDGraphic_Point p = {0, 0};
-    CFBDGraphic_InitText(&fps_text, p, screen_size, ASCII_6x8);
+    CFBDGraphic_InitText(&fps_text, p, screen_size, ASCII_8x16);
 
     uint32_t frame_count = 0;
     uint32_t last_time = HAL_GetTick();
@@ -46,12 +47,12 @@ static void test_fps_benchmark(CFBD_GraphicDevice* handler)
 
         snprintf(buffer,
                  sizeof(buffer),
-                 "FPS: %lu.%lu\n"
-                 "Time: %lus\n",
+                 "FPS: %lu.%lu "
+                 "Time: %lus",
                  fps_x10 / 10,
                  fps_x10 % 10,
                  (HAL_GetTick() - test_start) / 1000);
-
+        CFBDGraphic_DeviceClearImmediate(handler);
         CFBDGraphic_SetText(&fps_text, buffer);
         CFBDGraphic_DrawText(handler, &fps_text, CCGraphic_AsciiTextItem_RequestOldPoint);
     }
@@ -59,7 +60,7 @@ static void test_fps_benchmark(CFBD_GraphicDevice* handler)
     CFBDGraphic_DeviceClearImmediate(handler);
     snprintf(buffer,
              sizeof(buffer),
-             "Test Complete!\n"
+             "Test Complete! "
              "Final FPS: %lu.%lu",
              fps_x10 / 10,
              fps_x10 % 10);

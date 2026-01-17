@@ -35,6 +35,7 @@
  * @note This address is used when initializing I2C communication with the SSD1309 device.
  */
 #define SSD1309_DRIVER_ADDRESS (0x78)
+#define SSD1309_IIC_PACK (SSD130X_REQUEST_IIC_PACK)
 
 /**
  * @brief Factory function: returns the SSD1309 device-specific descriptor.

@@ -15,6 +15,8 @@
 #pragma once
 #include <stdint.h>
 
+#include "configs/iic_pack_type.h"
+
 /**
  * @defgroup OLED_Device OLED Device Interface
  * @ingroup OLED
@@ -109,6 +111,18 @@ typedef struct
      * @brief Logical height of the display in pixels.
      */
     uint16_t logic_height;
+
+    /**
+     * @brief for package iic
+     *
+     */
+    const char* iic_pack_type;
+
+    /**
+     * @brief oled specified datas
+     *
+     */
+    void* private_data;
 } CFBD_OLED_DeviceSpecific;
 
 /** @} */ // end of OLED_Device group

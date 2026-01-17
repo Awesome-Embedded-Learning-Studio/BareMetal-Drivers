@@ -4,7 +4,6 @@
 
 #include "cfbd_define.h"
 
-
 static inline CFBD_OLED* _get_oled(CFBD_GraphicDevice* device)
 {
     return (CFBD_OLED*) device->internal_handle;
@@ -95,24 +94,34 @@ static CFBD_Bool graphic_oled_self_consult(CFBD_GraphicDevice* device,
     return _get_oled(device)->ops->self_consult(_get_oled(device), property, args, request_data);
 }
 
-static CFBD_GraphicDeviceOperation graphic_oled_ops = {
-        .init = graphic_oled_init,
-        .setPixel = graphic_oled_setPixel,
-        .setArea = graphic_oled_drawArea,
+static CFBD_Bool graphic_oled_self_sets(CFBD_GraphicDevice* device,
+                                        const char* property,
+                                        void* args,
+                                        void* request_data)
+{
+    return _get_oled(device)->ops->self_property_setter(_get_oled(device),
+                                                        property,
+                                                        args,
+                                                        request_data);
+}
 
-        .update = graphic_oled_update,
-        .clear = graphic_oled_clear,
-        .revert = graphic_oled_revert,
+static CFBD_GraphicDeviceOperation graphic_oled_ops = {.init = graphic_oled_init,
+                                                       .setPixel = graphic_oled_setPixel,
+                                                       .setArea = graphic_oled_drawArea,
 
-        .update_area = graphic_oled_update_area,
-        .clear_area = graphic_oled_clear_area,
-        .revert_area = graphic_oled_revert_area,
+                                                       .update = graphic_oled_update,
+                                                       .clear = graphic_oled_clear,
+                                                       .revert = graphic_oled_revert,
 
-        .open = graphic_oled_open,
-        .close = graphic_oled_close,
+                                                       .update_area = graphic_oled_update_area,
+                                                       .clear_area = graphic_oled_clear_area,
+                                                       .revert_area = graphic_oled_revert_area,
 
-        .self_consult = graphic_oled_self_consult,
-};
+                                                       .open = graphic_oled_open,
+                                                       .close = graphic_oled_close,
+
+                                                       .self_consult = graphic_oled_self_consult,
+                                                       .self_sets = graphic_oled_self_sets};
 
 void CFBDGraphic_BindOLEDAsDevice(CFBD_GraphicDevice* device, CFBD_OLED* oled)
 {
