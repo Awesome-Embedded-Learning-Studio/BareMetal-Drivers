@@ -47,7 +47,6 @@
 
 #if defined(CFBD_IS_ST)
 #include <stdint.h>
-#include <stm32f1xx_hal_gpio.h>
 
 /**
  * @defgroup STM32_GPIO_Impl STM32 GPIO Implementation Backend

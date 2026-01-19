@@ -1,6 +1,8 @@
-#include "clock_initer.h"
+#include "../clock_initer.h"
+
 #include "config/system_settings.h"
 
+#ifdef STM32F1
 /**
  * @brief   DEFAULT_RCC_PLL_VALUE promised the default CLK,
  *          for RCC_PLL_MUL9, it's 72MHz
@@ -39,24 +41,22 @@ static void __init_as_clk_72MHz(uint32_t plln)
      *       as clock settings are fundamental to all microcontroller operations.
      *       The infinite loop should be replaced with proper error handling in production code.
      */
-    if (ret != HAL_OK)
-    {
+    if (ret != HAL_OK) {
         /* Clock initialization failed - system cannot function properly */
         __clk_bad_init_hook();
     }
 
     /* Configure system clock sources and bus prescalers */
-    rcc_clk_init.ClockType = (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK |
-                              RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2); /* Select all clock domains to configure */
-    rcc_clk_init.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;                  /* Use PLL output as system clock */
-    rcc_clk_init.AHBCLKDivider = RCC_SYSCLK_DIV1;                         /* AHB bus clock = SYSCLK/1 */
-    rcc_clk_init.APB1CLKDivider = RCC_HCLK_DIV2;                          /* APB1 (low-speed) bus clock = HCLK/2 */
-    rcc_clk_init.APB2CLKDivider = RCC_HCLK_DIV1;                          /* APB2 (high-speed) bus clock = HCLK/1 */
+    rcc_clk_init.ClockType = (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1 |
+                              RCC_CLOCKTYPE_PCLK2);      /* Select all clock domains to configure */
+    rcc_clk_init.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK; /* Use PLL output as system clock */
+    rcc_clk_init.AHBCLKDivider = RCC_SYSCLK_DIV1;        /* AHB bus clock = SYSCLK/1 */
+    rcc_clk_init.APB1CLKDivider = RCC_HCLK_DIV2;         /* APB1 (low-speed) bus clock = HCLK/2 */
+    rcc_clk_init.APB2CLKDivider = RCC_HCLK_DIV1;         /* APB2 (high-speed) bus clock = HCLK/1 */
 
     ret = HAL_RCC_ClockConfig(&rcc_clk_init, FLASH_LATENCY_2);
 
-    if (ret != HAL_OK)
-    {
+    if (ret != HAL_OK) {
         /* Clock configuration failed - critical error condition */
         __clk_bad_init_hook();
     }
@@ -67,3 +67,5 @@ void system_clock_init()
 {
     __init_as_clk_72MHz(DEFAULT_RCC_PLL_VALUE);
 }
+
+#endif

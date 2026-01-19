@@ -11,14 +11,22 @@
 
 #pragma once
 
-// includes for chip libraries
-#include <stm32f1xx_hal.h>
-
 #if defined(STM32F0) || defined(STM32F1) || defined(STM32F2) || defined(STM32F3) ||                \
         defined(STM32F4) || defined(STM32F7) || defined(STM32G0) || defined(STM32G4) ||            \
         defined(STM32H7) || defined(STM32L0) || defined(STM32L1) || defined(STM32L4)
 
 #define CFBD_IS_ST (1)
+
+#if defined(STM32F1)
+// includes for chip libraries
+#include <stm32f1xx_hal.h>
+#include <stm32f1xx_hal_gpio.h>
+#endif
+
+#if defined(STM32G4)
+#include <stm32g4xx_hal.h>
+#include <stm32g4xx_hal_gpio.h>
+#endif
 
 #else
 

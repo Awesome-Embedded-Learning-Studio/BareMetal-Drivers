@@ -132,3 +132,5 @@ static void inline CFBD_GPIOSetPin(CFBD_GPIOHandle* handle, CFBD_Bool status)
 {
     status ? CFBD_GPIOSet(handle) : CFBD_GPIOUnset(handle);
 }
+
+CFBD_Bool CFBD_GPIOReadPin(CFBD_GPIOHandle* handle);
