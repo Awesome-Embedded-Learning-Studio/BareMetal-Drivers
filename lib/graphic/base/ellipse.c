@@ -18,7 +18,7 @@
 #define SQUARE(X) ((X) * (X))
 
 static inline void clearBound(CFBD_GraphicDevice* handler,
-                              CCGraphic_Ellipse* ellipse,
+                              CFBD_GraphicEllipse* ellipse,
                               const int16_t x_radius,
                               const int16_t y_radius)
 {
@@ -34,7 +34,7 @@ static inline void clearBound(CFBD_GraphicDevice* handler,
                               clamp_u16_from_i32(by - ty + 1));
 }
 
-void CFBDGraphic_DrawEllipse(CFBD_GraphicDevice* handler, CCGraphic_Ellipse* ellipse)
+void CFBDGraphic_DrawEllipse(CFBD_GraphicDevice* handler, CFBD_GraphicEllipse* ellipse)
 {
     PREANNOUNCE;
     CFBD_Bool (*setPixel)(CFBD_GraphicDevice* device, uint16_t x, uint16_t y) =
@@ -111,7 +111,7 @@ void CFBDGraphic_DrawEllipse(CFBD_GraphicDevice* handler, CCGraphic_Ellipse* ell
     }
 }
 
-void CFBDGraphic_DrawFilledEllipse(CFBD_GraphicDevice* handler, CCGraphic_Ellipse* ellipse)
+void CFBDGraphic_DrawFilledEllipse(CFBD_GraphicDevice* handler, CFBD_GraphicEllipse* ellipse)
 {
     PREANNOUNCE;
     CFBD_Bool (*setPixel)(CFBD_GraphicDevice* device, uint16_t x, uint16_t y) =

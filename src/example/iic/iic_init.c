@@ -1,12 +1,11 @@
 #include "iic_init.h"
-#include "ah_no.h"
 
-#include "iic_init.h"
 #include "ah_no.h"
+#include "iic_init.h"
 
 I2C_HandleTypeDef hi2c1;
-DMA_HandleTypeDef hdma_i2c1_tx;  // 新增
-DMA_HandleTypeDef hdma_i2c1_rx;  // 新增
+DMA_HandleTypeDef hdma_i2c1_tx; // 新增
+DMA_HandleTypeDef hdma_i2c1_rx; // 新增
 
 /* I2C1 init function */
 void MX_I2C1_Init(void)
@@ -30,7 +29,7 @@ void HAL_I2C_MspInit(I2C_HandleTypeDef* i2cHandle)
     GPIO_InitTypeDef GPIO_InitStruct = {0};
     if (i2cHandle->Instance == I2C1) {
         __HAL_RCC_GPIOB_CLK_ENABLE();
-        
+
         /**I2C1 GPIO Configuration */
         GPIO_InitStruct.Pin = GPIO_PIN_6 | GPIO_PIN_7;
         GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
@@ -66,7 +65,7 @@ void HAL_I2C_MspInit(I2C_HandleTypeDef* i2cHandle)
         hdma_i2c1_rx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
         hdma_i2c1_rx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
         hdma_i2c1_rx.Init.Mode = DMA_NORMAL;
-        hdma_i2c1_rx.Init.Priority = DMA_PRIORITY_HIGH;
+        hdma_i2c1_rx.Init.Priority = DMA_PRIORITY_VERY_HIGH;
         if (HAL_DMA_Init(&hdma_i2c1_rx) != HAL_OK) {
             CFBD_AH_NO();
         }
@@ -82,21 +81,21 @@ void HAL_I2C_MspInit(I2C_HandleTypeDef* i2cHandle)
         /* I2C1 interrupt Init */
         HAL_NVIC_SetPriority(I2C1_EV_IRQn, 0, 0);
         HAL_NVIC_EnableIRQ(I2C1_EV_IRQn);
-        HAL_NVIC_SetPriority(I2C1_ER_IRQn, 0, 0);  // 新增错误中断
+        HAL_NVIC_SetPriority(I2C1_ER_IRQn, 0, 0); // 新增错误中断
         HAL_NVIC_EnableIRQ(I2C1_ER_IRQn);
     }
 }
 
 void HAL_I2C_MspDeInit(I2C_HandleTypeDef* i2cHandle)
 {
-    if(i2cHandle->Instance == I2C1) {
+    if (i2cHandle->Instance == I2C1) {
         __HAL_RCC_I2C1_CLK_DISABLE();
         HAL_GPIO_DeInit(GPIOB, GPIO_PIN_6 | GPIO_PIN_7);
-        
+
         /* DMA DeInit */
         HAL_DMA_DeInit(i2cHandle->hdmatx);
         HAL_DMA_DeInit(i2cHandle->hdmarx);
-        
+
         /* Peripheral interrupt DeInit */
         HAL_NVIC_DisableIRQ(DMA1_Channel6_IRQn);
         HAL_NVIC_DisableIRQ(DMA1_Channel7_IRQn);
@@ -107,31 +106,32 @@ void HAL_I2C_MspDeInit(I2C_HandleTypeDef* i2cHandle)
 
 static CFBD_ST_I2CPrivate iic_params;
 
-CFBD_ST_I2CPrivate* getIICPrivateInits(){
+CFBD_ST_I2CPrivate* getIICPrivateInits()
+{
     init_stm32_i2c_privates(&iic_params, &hi2c1, GPIOB, GPIO_PIN_6, GPIOB, GPIO_PIN_7);
     MX_I2C1_Init();
     return &iic_params;
 }
 
 /**
-  * @brief This function handles DMA1 channel6 global interrupt (I2C1 TX).
-  */
+ * @brief This function handles DMA1 channel6 global interrupt (I2C1 TX).
+ */
 void DMA1_Channel6_IRQHandler(void)
 {
     HAL_DMA_IRQHandler(&hdma_i2c1_tx);
 }
 
 /**
-  * @brief This function handles DMA1 channel7 global interrupt (I2C1 RX).
-  */
+ * @brief This function handles DMA1 channel7 global interrupt (I2C1 RX).
+ */
 void DMA1_Channel7_IRQHandler(void)
 {
     HAL_DMA_IRQHandler(&hdma_i2c1_rx);
 }
 
 /**
-  * @brief This function handles I2C1 error interrupt.
-  */
+ * @brief This function handles I2C1 error interrupt.
+ */
 void I2C1_ER_IRQHandler(void)
 {
     HAL_I2C_ER_IRQHandler(&hi2c1);

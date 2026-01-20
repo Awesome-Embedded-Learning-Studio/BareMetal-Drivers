@@ -39,7 +39,7 @@
  * @example
  * @code
  * // Example 1: 90-degree quarter arc
- * CCGraphic_Arc quarter = {
+ * CFBD_GraphicArc quarter = {
  *     .center = {160, 120},
  *     .radius = 50,
  *     .start_degree = 0,
@@ -48,7 +48,7 @@
  * CFBDGraphic_DrawArc(device, &quarter);
  *
  * // Example 2: Progress indicator (filled arc)
- * CCGraphic_Arc progress = {
+ * CFBD_GraphicArc progress = {
  *     .center = {160, 120},
  *     .radius = 40,
  *     .start_degree = 0,
@@ -59,7 +59,7 @@
  * // Example 3: Clock hour markers (12 arcs)
  * for (int i = 0; i < 12; i++) {
  *     int angle = (i * 30);  // 30 degrees per hour
- *     CCGraphic_Arc marker = {
+ *     CFBD_GraphicArc marker = {
  *         .center = {160, 120},
  *         .radius = 60,
  *         .start_degree = angle,
@@ -76,7 +76,7 @@
 #include "point.h"
 
 /**
- * @struct CCGraphic_Arc
+ * @struct CFBD_GraphicArc
  * @ingroup Arc_Module
  * @brief Represents a circular arc defined by center, radius, and angular range.
  *
@@ -99,7 +99,7 @@
  * @example
  * @code
  * // Create a 90-degree arc in the first quadrant
- * CCGraphic_Arc quarter_arc = {
+ * CFBD_GraphicArc quarter_arc = {
  *     .center = {160, 120},
  *     .radius = 50,
  *     .start_degree = 0,
@@ -107,7 +107,7 @@
  * };
  *
  * // Create a semicircle (180 degrees)
- * CCGraphic_Arc semi = {
+ * CFBD_GraphicArc semi = {
  *     .center = {160, 120},
  *     .radius = 50,
  *     .start_degree = 0,
@@ -115,7 +115,7 @@
  * };
  *
  * // Create an arc that wraps (e.g., from 270° to 90° = 180° arc)
- * CCGraphic_Arc wrap_arc = {
+ * CFBD_GraphicArc wrap_arc = {
  *     .center = {160, 120},
  *     .radius = 50,
  *     .start_degree = 270,
@@ -123,7 +123,7 @@
  * };
  * @endcode
  */
-typedef struct
+typedef struct __CFBD_GraphicArc
 {
     /** @brief Center point of the arc's parent circle. */
     CFBDGraphic_Point center;
@@ -137,7 +137,7 @@ typedef struct
 
     /** @brief Ending angle in degrees (0-359). The arc sweeps from start_degree to end_degree. */
     int16_t end_degree;
-} CCGraphic_Arc;
+} CFBD_GraphicArc;
 
 /**
  * @brief Draw the outline of an arc on the provided graphic device.
@@ -146,7 +146,7 @@ typedef struct
  * or drawing radii. The arc is defined by its center, radius, and angular range.
  *
  * @param device Target graphic device pointer. Must be a valid and initialized device.
- * @param circle Pointer to a `CCGraphic_Arc` describing the arc to draw.
+ * @param circle Pointer to a `CFBD_GraphicArc` describing the arc to draw.
  *
  * @return void
  *
@@ -172,7 +172,7 @@ typedef struct
  * @example
  * @code
  * // Draw a 90-degree quarter arc
- * CCGraphic_Arc quarter = {
+ * CFBD_GraphicArc quarter = {
  *     .center = {160, 120},
  *     .radius = 50,
  *     .start_degree = 0,
@@ -182,7 +182,7 @@ typedef struct
  *
  * // Draw multiple arcs for a speedometer
  * for (int angle = 0; angle < 180; angle += 30) {
- *     CCGraphic_Arc tick = {
+ *     CFBD_GraphicArc tick = {
  *         .center = {160, 120},
  *         .radius = 60,
  *         .start_degree = angle,
@@ -192,7 +192,7 @@ typedef struct
  * }
  *
  * // Draw wrapping arc (e.g., from 330° to 30°)
- * CCGraphic_Arc wrap = {
+ * CFBD_GraphicArc wrap = {
  *     .center = {160, 120},
  *     .radius = 45,
  *     .start_degree = 330,
@@ -202,9 +202,9 @@ typedef struct
  * @endcode
  *
  * @see CFBDGraphic_DrawFilledArc
- * @see CCGraphic_Arc
+ * @see CFBD_GraphicArc
  */
-void CFBDGraphic_DrawArc(CFBD_GraphicDevice* device, CCGraphic_Arc* circle);
+void CFBDGraphic_DrawArc(CFBD_GraphicDevice* device, CFBD_GraphicArc* circle);
 
 /**
  * @brief Draw a filled arc (sector) on the provided graphic device.
@@ -213,7 +213,7 @@ void CFBDGraphic_DrawArc(CFBD_GraphicDevice* device, CCGraphic_Arc* circle);
  * to the center, forming a pie-slice or wedge shape.
  *
  * @param device Target graphic device pointer. Must be initialized and valid.
- * @param circle Pointer to a `CCGraphic_Arc` describing the sector to fill.
+ * @param circle Pointer to a `CFBD_GraphicArc` describing the sector to fill.
  *
  * @return void
  *
@@ -245,7 +245,7 @@ void CFBDGraphic_DrawArc(CFBD_GraphicDevice* device, CCGraphic_Arc* circle);
  * @example
 n * @code
  * // Draw a progress indicator at 75%
- * CCGraphic_Arc progress = {
+ * CFBD_GraphicArc progress = {
  *     .center = {160, 120},
  *     .radius = 40,
  *     .start_degree = 0,
@@ -254,7 +254,7 @@ n * @code
  * CFBDGraphic_DrawFilledArc(device, &progress);
  *
  * // Draw pie chart segments
- * CCGraphic_Arc segments[] = {
+ * CFBD_GraphicArc segments[] = {
  *     {.center = {160, 120}, .radius = 50, .start_degree = 0,   .end_degree = 120},
  *     {.center = {160, 120}, .radius = 50, .start_degree = 120, .end_degree = 240},
  *     {.center = {160, 120}, .radius = 50, .start_degree = 240, .end_degree = 360}
@@ -264,7 +264,7 @@ n * @code
  * }
  *
  * // Draw loading spinner segment (30 degrees)
- * CCGraphic_Arc spinner = {
+ * CFBD_GraphicArc spinner = {
  *     .center = {160, 120},
  *     .radius = 50,
  *     .start_degree = 45,
@@ -274,8 +274,8 @@ n * @code
  * @endcode
  *
  * @see CFBDGraphic_DrawArc
- * @see CCGraphic_Arc
+ * @see CFBD_GraphicArc
  */
-void CFBDGraphic_DrawFilledArc(CFBD_GraphicDevice* device, CCGraphic_Arc* circle);
+void CFBDGraphic_DrawFilledArc(CFBD_GraphicDevice* device, CFBD_GraphicArc* circle);
 
 /** @} */ // End of Arc_Module group

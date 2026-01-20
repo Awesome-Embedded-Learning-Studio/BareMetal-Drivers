@@ -11,7 +11,7 @@
 #include "point.h"
 
 /**
- * @struct CCGraphic_Ellipse
+ * @struct CFBD_GraphicEllipse
  * @brief Represents an ellipse defined by center point and two radii.
  *
  * This structure defines an ellipse in 2D space using a center point and
@@ -30,7 +30,7 @@
  * @example
  * @code
  * // Create a circle with center at (160, 120) and radius 50
- * CCGraphic_Ellipse circle = {
+ * CFBD_GraphicEllipse circle = {
  *     {160, 120},  // center
  *     50,          // X_Radius
  *     50           // Y_Radius
@@ -38,7 +38,7 @@
  * CFBDGraphic_DrawEllipse(device, &circle);
  *
  * // Create an ellipse with different horizontal and vertical radii
- * CCGraphic_Ellipse ellipse = {
+ * CFBD_GraphicEllipse ellipse = {
  *     {160, 120},  // center
  *     80,          // X_Radius (wider)
  *     50           // Y_Radius (narrower)
@@ -46,16 +46,16 @@
  * CFBDGraphic_DrawEllipse(device, &ellipse);
  *
  * // Draw a filled ellipse
- * CCGraphic_Ellipse filled_ellipse = {{320, 240}, 30, 40};
+ * CFBD_GraphicEllipse filled_ellipse = {{320, 240}, 30, 40};
  * CFBDGraphic_DrawFilledEllipse(device, &filled_ellipse);
  * @endcode
  */
-typedef struct
+typedef struct __CFBD_GraphicEllipse
 {
     CFBDGraphic_Point center; /**< The center point of the ellipse */
     PointBaseType X_Radius;   /**< The horizontal radius (semi-major or semi-minor axis) */
     PointBaseType Y_Radius;   /**< The vertical radius (semi-minor or semi-major axis) */
-} CCGraphic_Ellipse;
+} CFBD_GraphicEllipse;
 
 /**
  * @brief Renders the outline of an ellipse on the graphics device.
@@ -88,11 +88,11 @@ typedef struct
  * @example
  * @code
  * // Draw an outline circle with radius 50
- * CCGraphic_Ellipse circle = {{160, 120}, 50, 50};
+ * CFBD_GraphicEllipse circle = {{160, 120}, 50, 50};
  * CFBDGraphic_DrawEllipse(display_device, &circle);
  *
  * // Draw multiple ellipses
- * CCGraphic_Ellipse ellipses[] = {
+ * CFBD_GraphicEllipse ellipses[] = {
  *     {{100, 100}, 30, 20},
  *     {{200, 100}, 40, 25},
  *     {{150, 200}, 50, 35}
@@ -103,11 +103,11 @@ typedef struct
  * }
  * @endcode
  *
- * @see CCGraphic_Ellipse
+ * @see CFBD_GraphicEllipse
  * @see CFBDGraphic_DrawFilledEllipse
  * @see CFBD_GraphicDevice
  */
-void CFBDGraphic_DrawEllipse(CFBD_GraphicDevice* device, CCGraphic_Ellipse* ellipse);
+void CFBDGraphic_DrawEllipse(CFBD_GraphicDevice* device, CFBD_GraphicEllipse* ellipse);
 
 /**
  * @brief Renders a filled ellipse on the graphics device.
@@ -141,24 +141,24 @@ void CFBDGraphic_DrawEllipse(CFBD_GraphicDevice* device, CCGraphic_Ellipse* elli
  * @example
  * @code
  * // Create a filled circle as a button
- * CCGraphic_Ellipse button = {{160, 120}, 40, 40};
+ * CFBD_GraphicEllipse button = {{160, 120}, 40, 40};
  * CFBDGraphic_DrawFilledEllipse(device, &button);
  *
  * // Draw concentric filled ellipses for a target
  * for (int i = 3; i > 0; i--) {
- *     CCGraphic_Ellipse target_ring = {{320, 240}, i * 30, i * 30};
+ *     CFBD_GraphicEllipse target_ring = {{320, 240}, i * 30, i * 30};
  *     CFBDGraphic_DrawFilledEllipse(device, &target_ring);
  * }
  *
  * // Create a filled ellipse overlay
- * CCGraphic_Ellipse overlay = {{160, 120}, 60, 40};
+ * CFBD_GraphicEllipse overlay = {{160, 120}, 60, 40};
  * CFBDGraphic_DrawFilledEllipse(semi_transparent_device, &overlay);
  * @endcode
  *
- * @see CCGraphic_Ellipse
+ * @see CFBD_GraphicEllipse
  * @see CFBDGraphic_DrawEllipse
  * @see CFBD_GraphicDevice
  */
-void CFBDGraphic_DrawFilledEllipse(CFBD_GraphicDevice* device, CCGraphic_Ellipse* ellipse);
+void CFBDGraphic_DrawFilledEllipse(CFBD_GraphicDevice* device, CFBD_GraphicEllipse* ellipse);
 
 /** @} */ // End of Ellipse_Module group

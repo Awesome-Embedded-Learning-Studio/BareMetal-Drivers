@@ -95,7 +95,7 @@
  * };
  * @endcode
  */
-typedef struct
+typedef struct __CFBDGraphicCircle
 {
     /** @brief Radius of the circle in device units. */
     SizeBaseType radius;

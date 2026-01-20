@@ -15,7 +15,7 @@ static CFBD_Bool __pvt_is_in_angle(int16_t x, int16_t y, int16_t start, int16_t 
                        : (start > point_angle || point_angle > end);
 }
 
-static void clearArea(CFBD_GraphicDevice* device, CCGraphic_Arc* arc)
+static void clearArea(CFBD_GraphicDevice* device, CFBD_GraphicArc* arc)
 {
     int32_t cx = asInt32_t(arc->center.x);
     int32_t cy = asInt32_t(arc->center.y);
@@ -31,7 +31,7 @@ static void clearArea(CFBD_GraphicDevice* device, CCGraphic_Arc* arc)
     device->ops->clear_area(device, clamp_u16_from_i32(lx), clamp_u16_from_i32(ty), w, h);
 }
 
-static void updateArea(CFBD_GraphicDevice* device, CCGraphic_Arc* arc)
+static void updateArea(CFBD_GraphicDevice* device, CFBD_GraphicArc* arc)
 {
     int32_t cx = asInt32_t(arc->center.x);
     int32_t cy = asInt32_t(arc->center.y);
@@ -65,7 +65,7 @@ static void updateArea(CFBD_GraphicDevice* device, CCGraphic_Arc* arc)
         }                                                                                          \
     } while (0)
 
-void CFBDGraphic_DrawArc(CFBD_GraphicDevice* device, CCGraphic_Arc* arc)
+void CFBDGraphic_DrawArc(CFBD_GraphicDevice* device, CFBD_GraphicArc* arc)
 {
     PREANNOUNCE;
     clearArea(device, arc);
@@ -113,7 +113,7 @@ void CFBDGraphic_DrawArc(CFBD_GraphicDevice* device, CCGraphic_Arc* arc)
     }
 }
 
-void CFBDGraphic_DrawFilledArc(CFBD_GraphicDevice* device, CCGraphic_Arc* arc)
+void CFBDGraphic_DrawFilledArc(CFBD_GraphicDevice* device, CFBD_GraphicArc* arc)
 {
     PREANNOUNCE;
     CFBD_Bool (*setPixel)(CFBD_GraphicDevice* device, uint16_t x, uint16_t y) =

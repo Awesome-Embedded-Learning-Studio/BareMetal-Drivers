@@ -1,5 +1,7 @@
 #include "i2c_stm_impl.h"
 
+#include <memory.h>
+
 #include "../iic.h"
 
 void init_stm32_i2c_privates(CFBD_ST_I2CPrivate* priv,
@@ -101,10 +103,11 @@ static int stm32_transfer(CFBD_I2CHandle* bus, CFBD_I2C_Message* msgs, int num, 
             /* write */
             if (i + 1 < num) {
                 CFBD_I2C_Message* next = &msgs[i + 1];
-                if (!(next->flags & I2C_M_RD) && next->addr == m->addr && m->len == 1) {
+
+                if (!(next->flags & I2C_M_RD) && next->addr == m->addr && m->len == 1 &&
+                    next->len == 1) {
                     uint16_t memAddr = m->buf[0];
 
-                    // ✅ 使用 DMA（如果有）否则轮询
                     if (p->hi2c->hdmatx != NULL) {
                         status = HAL_I2C_Mem_Write_DMA(p->hi2c,
                                                        devAddr,
@@ -117,7 +120,6 @@ static int stm32_transfer(CFBD_I2CHandle* bus, CFBD_I2C_Message* msgs, int num, 
                             return I2C_ERR_IO;
                         }
 
-                        // 等待 DMA 完成
                         uint32_t tickstart = HAL_GetTick();
                         while (HAL_I2C_GetState(p->hi2c) != HAL_I2C_STATE_READY) {
                             if ((HAL_GetTick() - tickstart) > timeout_ms) {
@@ -127,7 +129,6 @@ static int stm32_transfer(CFBD_I2CHandle* bus, CFBD_I2C_Message* msgs, int num, 
                         }
                     }
                     else {
-                        // 回退到轮询模式
                         status = HAL_I2C_Mem_Write(p->hi2c,
                                                    devAddr,
                                                    memAddr,
@@ -141,12 +142,11 @@ static int stm32_transfer(CFBD_I2CHandle* bus, CFBD_I2C_Message* msgs, int num, 
                         }
                     }
 
-                    i++;
+                    i++; // 跳过下一个消息
                     continue;
                 }
             }
 
-            // 普通写
             if (p->hi2c->hdmatx != NULL) {
                 status = HAL_I2C_Master_Transmit_DMA(p->hi2c, devAddr, m->buf, m->len);
                 if (status != HAL_OK) {
@@ -184,7 +184,6 @@ static int stm32_transfer(CFBD_I2CHandle* bus, CFBD_I2C_Message* msgs, int num, 
                     uint16_t memadd =
                             (prev->len == 1) ? I2C_MEMADD_SIZE_8BIT : I2C_MEMADD_SIZE_16BIT;
 
-                    // 使用 DMA 读
                     if (p->hi2c->hdmarx != NULL) {
                         status =
                                 HAL_I2C_Mem_Read_DMA(p->hi2c, devAddr, mem, memadd, m->buf, m->len);
@@ -247,8 +246,6 @@ static int stm32_transfer(CFBD_I2CHandle* bus, CFBD_I2C_Message* msgs, int num, 
     p->last_err = I2C_OK;
     return I2C_OK;
 }
-
-/* ---------- rest (is_device_ready, recover, get_error) ---------- */
 
 static int
 stm32_is_device_ready(CFBD_I2CHandle* bus, uint16_t addr, uint32_t trials, uint32_t timeout_ms)

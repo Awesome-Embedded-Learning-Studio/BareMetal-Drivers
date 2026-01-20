@@ -23,7 +23,7 @@ static void test_fps_benchmark(CFBD_GraphicDevice* handler)
     uint32_t frame_count = 0;
     uint32_t last_time = HAL_GetTick();
 
-    uint32_t fps_x10 = 0; // FPS * 10（定点数）
+    uint32_t fps_x10 = 0;
     char buffer[64];
 
     uint32_t test_start = HAL_GetTick();
@@ -52,7 +52,7 @@ static void test_fps_benchmark(CFBD_GraphicDevice* handler)
                  fps_x10 / 10,
                  fps_x10 % 10,
                  (HAL_GetTick() - test_start) / 1000);
-        CFBDGraphic_DeviceClearImmediate(handler);
+        // CFBDGraphic_DeviceClearImmediate(handler);
         CFBDGraphic_SetText(&fps_text, buffer);
         CFBDGraphic_DrawText(handler, &fps_text, CCGraphic_AsciiTextItem_RequestOldPoint);
     }

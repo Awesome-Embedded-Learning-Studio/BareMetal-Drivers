@@ -49,11 +49,11 @@ static void test_draw_circle(CFBD_GraphicDevice* handler)
 static void test_draw_ellipse(CFBD_GraphicDevice* handler)
 {
     // 测试1: 空心椭圆
-    CCGraphic_Ellipse ellipse1 = {.center = {85, 40}, .X_Radius = 15, .Y_Radius = 10};
+    CFBD_GraphicEllipse ellipse1 = {.center = {85, 40}, .X_Radius = 15, .Y_Radius = 10};
     CFBDGraphic_DrawEllipse(handler, &ellipse1);
 
     // 测试2: 实心椭圆
-    CCGraphic_Ellipse ellipse2 = {.center = {110, 55}, .X_Radius = 10, .Y_Radius = 6};
+    CFBD_GraphicEllipse ellipse2 = {.center = {110, 55}, .X_Radius = 10, .Y_Radius = 6};
     CFBDGraphic_DrawFilledEllipse(handler, &ellipse2);
 }
 
@@ -73,15 +73,18 @@ static void test_draw_triangle(CFBD_GraphicDevice* handler)
 static void test_draw_arc(CFBD_GraphicDevice* handler)
 {
     // 测试1: 空心圆弧 (0-90度)
-    CCGraphic_Arc arc1 = {.center = {20, 15}, .radius = 12, .start_degree = 0, .end_degree = 90};
+    CFBD_GraphicArc arc1 = {.center = {20, 15}, .radius = 12, .start_degree = 0, .end_degree = 90};
     CFBDGraphic_DrawArc(handler, &arc1);
 
     // 测试2: 空心圆弧 (180-270度)
-    CCGraphic_Arc arc2 = {.center = {45, 15}, .radius = 12, .start_degree = 180, .end_degree = 270};
+    CFBD_GraphicArc arc2 = {.center = {45, 15},
+                            .radius = 12,
+                            .start_degree = 180,
+                            .end_degree = 270};
     CFBDGraphic_DrawArc(handler, &arc2);
 
     // 测试3: 实心圆弧 (45-135度)
-    CCGraphic_Arc arc3 = {.center = {70, 55}, .radius = 8, .start_degree = 45, .end_degree = 135};
+    CFBD_GraphicArc arc3 = {.center = {70, 55}, .radius = 8, .start_degree = 45, .end_degree = 135};
     CFBDGraphic_DrawFilledArc(handler, &arc3);
 }
 
