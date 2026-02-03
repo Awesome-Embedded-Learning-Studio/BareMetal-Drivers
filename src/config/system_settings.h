@@ -21,11 +21,13 @@
 // includes for chip libraries
 #include <stm32f1xx_hal.h>
 #include <stm32f1xx_hal_gpio.h>
+#include <stm32f1xx_hal_uart.h>
 #endif
 
 #if defined(STM32G4)
 #include <stm32g4xx_hal.h>
 #include <stm32g4xx_hal_gpio.h>
+#include <stm32g4xx_hal_uart.h>
 #endif
 
 #else

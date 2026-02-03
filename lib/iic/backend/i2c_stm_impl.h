@@ -17,7 +17,6 @@
 
 #pragma once
 #include "../iic.h"
-#include "lib_settings.h"
 
 /**
  * @struct CFBD_ST_I2CPrivate
